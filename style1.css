@@ -419,9 +419,8 @@ header {
   right: -14px;
   width: 20px;
   height: 20px;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 50%;
+  background: none;
+  border: none;
   font-size: 0.6rem;
   cursor: pointer;
   color: rgba(255, 255, 255, 0.8);
@@ -429,10 +428,26 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.15s;
+  transition: color 0.15s;
 }
 
 .popup-close:hover {
   background: rgba(255, 255, 255, 0.35);
   color: #fff;
+}
+
+
+
+
+.floating-word {
+  position: absolute;
+  font-family: "digibop", sans-serif;
+  font-size: clamp(4rem, 4vw, 3rem);
+  font-weight: 400;
+  font-style: normal;
+  color: rgba(255, 255, 255, 0.452);
+  letter-spacing: 0.08em;
+  pointer-events: none;
+  z-index: 2;
+
 }

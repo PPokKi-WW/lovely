@@ -546,7 +546,30 @@ fetch(CSV_URL)
   .then(text => {
     const rows  = parseCSV(text);
     const first = rows[0] || {};
-    document.getElementById('site-title').textContent = first[KEYS.title]       || '';
+   
+// 새 코드
+const titleText = first[KEYS.title] || '';
+const titleWords = titleText.split(' ').filter(Boolean);
+
+// 기존 site-title 숨기기
+document.getElementById('site-title').style.display = 'none';
+
+titleWords.forEach(word => {
+  const el = document.createElement('div');
+  el.className = 'floating-word';
+  el.textContent = word;
+
+  // 뷰포트 범위 안에 배치
+  const margin = 100;
+  const wx = margin + Math.random() * (window.innerWidth - margin * 2);
+  const wy = margin + Math.random() * (window.innerHeight - margin * 2);
+
+  el.style.left = wx + 'px';
+  el.style.top  = wy + 'px';
+
+  world.appendChild(el);
+});
+
     document.getElementById('site-desc').textContent  = first[KEYS.description] || '';
     document.getElementById('about-text').textContent = first[KEYS.about]       || '';
     document.title = first[KEYS.title] || 'Kite';
