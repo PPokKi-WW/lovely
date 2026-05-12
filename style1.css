@@ -1,0 +1,438 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --sky-top: rgb(5, 20, 86);
+  --sky-mid1: rgb(106, 173, 225);
+  --sky-mid2: rgb(51, 22, 99);
+  --sky-sunset: rgb(204, 81, 9);
+  --sky-gold: rgb(198, 170, 12);
+  --white: #ffffff;
+  --modal-bg: rgba(255, 255, 255, 0.92);
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Cormorant Garamond', serif;
+  color: var(--white);
+  cursor: default;
+  background: var(--sky-top);
+}
+
+/*body.panning {
+  cursor: grabbing;
+}*/
+
+/* ── 배경 고정 레이어 ── */
+#bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3000px;
+  height: 12000px;
+  z-index: 0;
+  background: linear-gradient(to bottom,
+      var(--sky-top) 0%,
+      var(--sky-mid1) 40%,
+      var(--sky-sunset) 75%,
+      var(--sky-gold) 82%,
+      rgb(80, 60, 40) 88%,
+      rgb(50, 45, 45) 92%,
+      #3e494a 100%);
+}
+
+/* ── 무한 캔버스 (연들이 배치되는 공간) ── */
+#world {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  will-change: transform;
+  overflow: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(220, 208, 208, 0.3) transparent;
+}
+
+/* 월드 내부 크기를 WORLD_W x WORLD_H로 고정 */
+#world>#bg {
+  min-width: 12000px;
+  min-height: 10000px;
+}
+
+#world::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+#world::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#world::-webkit-scrollbar-thumb {
+  background: rgba(209, 201, 201, 0.912);
+  border-radius: 3px;
+}
+
+/* ── UI 레이어 (헤더 + about, 항상 고정) ── */
+#ui {
+  position: absolute;
+  /* world 안에서 배경과 함께 움직임 */
+  bottom: 100px;
+  left: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ── Header ── */
+header {
+  padding: 2.5rem 2rem 1rem;
+}
+
+#site-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3rem;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+
+#site-desc {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 0.4rem;
+  text-transform: uppercase;
+}
+
+/* ── About ── */
+.about {
+  padding: 0 2rem 2rem;
+}
+
+#about-text {
+  max-width: 560px;
+  font-size: 1.05rem;
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+
+/* ── Kite elements ── */
+.kite-wrap {
+  position: absolute;
+  cursor: pointer;
+  pointer-events: all;
+  z-index: 4;
+  transform-origin: center center;
+  transition: filter 0.2s;
+}
+
+.kite-wrap:hover {
+  filter: brightness(1) drop-shadow(0 0 12px rgba(255, 255, 255, 0.6));
+}
+
+.kite-wrap:hover .kite-label {
+  opacity: 1;
+  transform: translateX(5px);
+}
+
+.kite-svg {
+  display: block;
+  width: 60px;
+  height: 60px;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.35));
+}
+
+.kite-label {
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  white-space: nowrap;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 0.05em;
+  opacity: 0;
+  transition: opacity 0.2s, transform 0.2s;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+.kite-img {
+  display: block;
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.35));
+}
+
+
+
+/*****************************************************/
+/* ── Modal ── */
+#modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 6px;
+  /* 스크롤바 너비만큼 */
+  bottom: 6px;
+  pointer-events: none;
+  z-index: 100;
+  overflow: hidden;
+  /* 스크롤바 영역 밖으로 나가면 잘림 */
+}
+
+
+.modal {
+  background: var(--modal-bg);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 2px;
+  width: 420px;
+  /* 큐브 SVG가 들어갈 넉넉한 너비 */
+  overflow: visible;
+  /* SVG가 잘리지 않게 */
+  color: #1a1a1a;
+  position: absolute;
+  pointer-events: all;
+  padding: 2rem;
+  animation: modalIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1.2rem;
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: #100f0f;
+  line-height: 1;
+  transition: color 0.15s;
+  font-family: 'Space Mono', monospace;
+}
+
+.modal-close:hover {
+  color: #111;
+}
+
+.modal-cube {
+  width: 100%;
+  overflow: visible;
+}
+
+.modal-cube text {
+  font-family: 'Space Mono', monospace;
+  font-size: 7px;
+  fill: #333;
+  letter-spacing: 0.03em;
+}
+
+.modal-cube .faded {
+  fill: #bbb;
+}
+
+
+/*.modal-image {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  display: block;
+  background: #e8e8e8;
+}
+
+.modal-image.hidden {
+  display: none;
+}
+
+.modal-body {
+  padding: 1.5rem 1.8rem 2rem;
+}
+
+.modal-project {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.7rem;
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 0.4rem;
+  color: #111;
+}
+
+.modal-meta {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: #888;
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.modal-note {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  font-style: italic;
+  line-height: 1.65;
+  color: #444;
+}*/
+
+/* ── Scrollbar ── */
+.modal::-webkit-scrollbar {
+  width: 4px;
+}
+
+.modal::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 2px;
+}
+
+
+
+/* 하단 챕터 */
+#chapter2 {
+  position: fixed;
+  inset: 0;
+  background: #3e494a;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+}
+
+#chapter2-inner {
+  text-align: center;
+  padding: 3rem;
+}
+
+#chapter2-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  color: rgba(255, 255, 255, 0.35);
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+#chapter2-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 1.5rem;
+  line-height: 1.15;
+}
+
+#chapter2-body {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.55);
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+
+/*/////////////////////////////////
+//string////////////*/
+#string-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 10px;
+  /* 스크롤바 너비만큼 */
+  bottom: 10px;
+
+  width: calc(100% - 6px);
+  height: calc(100% - 6px);
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+
+/*///////////////////////////popup style///////////////////////////*/
+.kite-popup {
+  position: absolute;
+  background: transparent;
+  pointer-events: all;
+  z-index: 5;
+}
+
+/* 후 */
+.popup-svg {
+  display: block;
+  overflow: visible;
+}
+
+.popup-svg .pt {
+  font-family: 'Space Mono', monospace;
+  font-size: 6px;
+  fill: rgba(255, 255, 255, 0.85);
+  letter-spacing: 0.05em;
+}
+
+
+
+
+.popup-close {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  width: 20px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  font-size: 0.6rem;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.8);
+  font-family: 'Space Mono', monospace;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.popup-close:hover {
+  background: rgba(255, 255, 255, 0.35);
+  color: #fff;
+}

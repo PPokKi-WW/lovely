@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!--
+  © Provided by Prof. Yuseon Park
+  Hongik University, Design Research Studio, 2026
+  with support from Mindy Seu, Alvin Ashiatey
+-->
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style1.css" />
+</head>
+
+<body>
+
+  <!-- 무한 캔버스: 연들이 여기에 배치됨 -->
+  <div id="world">
+    <div id="bg"></div>
+
+
+    <!-- UI: 헤더 + about -->
+    <div id="ui">
+      <header>
+        <h1 id="site-title"></h1>
+        <p id="site-desc"></p>
+      </header>
+      <section class="about">
+        <p id="about-text"></p>
+      </section>
+    </div>
+  </div>
+
+
+
+  <!-- 패닝 힌트 
+  <div id="pan-hint">drag or scroll to explore ↓</div>-->
+
+  <!-- 미니맵 
+  <div id="minimap">
+    <div id="minimap-viewport"></div>
+  </div>-->
+
+  <!-- Modal -->
+  <div id="modal-container"></div>
+  <svg id="string-layer"></svg>
+
+  <!-- Chapter 2 -->
+  <div id="chapter2">
+    <div id="chapter2-inner">
+      <p id="chapter2-label">II</p>
+      <h2 id="chapter2-title">—</h2>
+      <p id="chapter2-body"></p>
+    </div>
+  </div>
+
+
+  <script src="main.js"></script>
+</body>
+
+</html>
