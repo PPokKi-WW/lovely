@@ -24,7 +24,7 @@ body {
 }
 
 body {
-  font-family: 'Cormorant Garamond', serif;
+
   color: var(--white);
   cursor: default;
   background: var(--sky-top);
@@ -43,11 +43,11 @@ body {
   height: 12000px;
   z-index: 0;
   background: linear-gradient(to bottom,
-      var(--sky-top) 0%,
-      var(--sky-mid1) 40%,
+      rgb(6, 1, 110) 0%,
+      var(--sky-mid1) 50%,
       var(--sky-sunset) 75%,
-      var(--sky-gold) 82%,
-      rgb(80, 60, 40) 88%,
+
+
       rgb(50, 45, 45) 92%,
       #3e494a 100%);
 }
@@ -99,7 +99,7 @@ header {
 }
 
 #site-title {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: fuuld, serif;
   font-size: 3rem;
   font-weight: 300;
   letter-spacing: 0.05em;
@@ -161,17 +161,17 @@ header {
 
 .kite-label {
   position: absolute;
-  bottom: -10px;
-  left: 50%;
+  bottom: -5px;
+  left: 60%;
   transform: translateX(-50%);
-  font-family: 'Space Mono', monospace;
-  font-size: 0.6rem;
+  font-family: "digibop", sans-serif;
+  font-size: 0.8rem;
   white-space: nowrap;
   color: rgba(255, 255, 255, 0.85);
   letter-spacing: 0.05em;
   opacity: 0;
   transition: opacity 0.2s, transform 0.2s;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.339);
 }
 
 .kite-img {
@@ -238,7 +238,7 @@ header {
   color: #100f0f;
   line-height: 1;
   transition: color 0.15s;
-  font-family: 'Space Mono', monospace;
+  font-family: fuuld, sans-serif;
 }
 
 .modal-close:hover {
@@ -262,49 +262,6 @@ header {
 }
 
 
-/*.modal-image {
-  width: 100%;
-  aspect-ratio: 4/3;
-  object-fit: cover;
-  display: block;
-  background: #e8e8e8;
-}
-
-.modal-image.hidden {
-  display: none;
-}
-
-.modal-body {
-  padding: 1.5rem 1.8rem 2rem;
-}
-
-.modal-project {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.7rem;
-  font-weight: 400;
-  line-height: 1.2;
-  margin-bottom: 0.4rem;
-  color: #111;
-}
-
-.modal-meta {
-  font-family: 'Space Mono', monospace;
-  font-size: 0.65rem;
-  letter-spacing: 0.08em;
-  color: #888;
-  text-transform: uppercase;
-  margin-bottom: 1.2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-}
-
-.modal-note {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1rem;
-  font-style: italic;
-  line-height: 1.65;
-  color: #444;
-}*/
 
 /* ── Scrollbar ── */
 .modal::-webkit-scrollbar {
@@ -326,7 +283,7 @@ header {
 #chapter2 {
   position: fixed;
   inset: 0;
-  background: #3e494a;
+  background: #77cbd2;
   z-index: 50;
   display: flex;
   align-items: center;
@@ -341,8 +298,8 @@ header {
 }
 
 #chapter2-label {
-  font-family: 'Space Mono', monospace;
-  font-size: 0.65rem;
+  font-family: "digibop", sans-serif;
+  font-size: 1 rem;
   letter-spacing: 0.3em;
   color: rgba(255, 255, 255, 0.35);
   text-transform: uppercase;
@@ -350,7 +307,7 @@ header {
 }
 
 #chapter2-title {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: "digibop", sans-serif;
   font-size: clamp(2rem, 6vw, 4rem);
   font-weight: 300;
   letter-spacing: 0.04em;
@@ -360,9 +317,8 @@ header {
 }
 
 #chapter2-body {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: "digibop", sans-serif;
   font-size: 1.05rem;
-  font-style: italic;
   font-weight: 300;
   line-height: 1.7;
   color: rgba(255, 255, 255, 0.55);
@@ -388,7 +344,6 @@ header {
   overflow: hidden;
 }
 
-
 /*///////////////////////////popup style///////////////////////////*/
 .kite-popup {
   position: absolute;
@@ -404,7 +359,9 @@ header {
 }
 
 .popup-svg .pt {
-  font-family: 'Space Mono', monospace;
+  font-family: jjminiarcade, sans-serif;
+  font-weight: 100;
+  font-style: normal;
   font-size: 6px;
   fill: rgba(255, 255, 255, 0.85);
   letter-spacing: 0.05em;
@@ -424,7 +381,7 @@ header {
   font-size: 0.6rem;
   cursor: pointer;
   color: rgba(255, 255, 255, 0.8);
-  font-family: 'Space Mono', monospace;
+  font-family: fuuld, sans-serif;
   display: flex;
   align-items: center;
   justify-content: center;
