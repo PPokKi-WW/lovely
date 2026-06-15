@@ -659,6 +659,76 @@ header {
   }
 }
 
+/* 상단 스텝 그리드 — 4열 */
+.print-step-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4mm;
+  margin-bottom: 8mm;
+}
+
+.print-step-cell {
+  position: relative;
+}
+
+.print-step-num {
+  position: absolute;
+  top: 2mm;
+  left: 2mm;
+  font-size: 8pt;
+  color: #111;
+  font-weight: 700;
+}
+
+.print-step-img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+}
+
+/* 하단 — 텍스트 왼쪽 + 이미지 오른쪽 */
+.print-bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10mm;
+  align-items: end;
+  margin-top: 6mm;
+}
+
+.print-bottom-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4mm;
+}
+
+.print-main-title {
+  font-size: 28pt;
+  font-weight: 900;
+  color: #111;
+  line-height: 1;
+  margin-top: 4mm;
+}
+
+.print-last-img {
+  width: 100%;
+  object-fit: contain;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /***********************************************/
 
 

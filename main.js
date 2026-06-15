@@ -189,38 +189,103 @@ document.getElementById('print-btn').addEventListener('click', () => {
   const title = currentSlide.querySelector('.ch2-step-title')?.textContent?.trim() || '';
   const desc  = currentSlide.querySelector('.ch2-step-desc')?.textContent?.trim()  || '';
 
-const imgUrls = data.images || [];
+const imgs = data.images || [];
 
-  // 인쇄 페이지 구성
   const page = document.createElement('div');
   page.className = 'print-page print-page-kite';
 
-  page.innerHTML = `
-    <!-- 상단 헤더 -->
-    <div class="print-header">
-      <p class="print-subtitle">How to make a kite</p>
-      <h1 class="print-main-title">${(data.title || title).toUpperCase()}</h1>
-    </div>
 
-    <!-- 본문: 이미지(왼쪽) + 텍스트(오른쪽) -->
-    <div class="print-body">
-      <div class="print-img-col" id="print-img-col"></div>
+  // ── 타입별 레이아웃 분기 ──
+  let printLayout = '';
 
-      <div class="print-text-col">
-        <h2 class="print-steps-heading">STEP BY STEP</h2>
-        <ol class="print-steps-list">
-          ${(data.steps || desc.split('|')).filter(Boolean).map(step =>
-            `<li class="print-step-li">${step.trim()}</li>`
-          ).join('')}
-        </ol>
-
-        ${data.desc ? `
-        <div class="print-desc-block">
-          <h2 class="print-desc-title">${data.desc}</h2>
-        </div>` : ''}
+  if (kiteType === 'flat') {
+    const gridImgs = imgs.slice(0, 6);
+    const lastImg  = imgs[6] || '';
+    printLayout = `
+      <div class="print-step-grid print-grid-4col">
+        ${gridImgs.map((src, i) => `
+          <div class="print-step-cell">
+            <span class="print-step-num">${i + 1}</span>
+            <img class="print-step-img" src="${src}" />
+          </div>
+        `).join('')}
       </div>
-    </div>
-  `;
+      <div class="print-bottom">
+        <div class="print-bottom-left">
+          <ol class="print-steps-list">
+            ${(data.steps || []).map(s => `<li class="print-step-li">${s.trim()}</li>`).join('')}
+          </ol>
+          <h1 class="print-main-title">${(data.title || '').toUpperCase()}</h1>
+        </div>
+        <div class="print-bottom-right">
+          ${lastImg ? `<img class="print-last-img" src="${lastImg}" />` : ''}
+        </div>
+      </div>
+    `;
+
+  } else if (kiteType === 'delta') {
+    const gridImgs = imgs.slice(0, 4);
+    const midImg   = imgs[4] || '';
+    const lastImg  = imgs[5] || '';
+    printLayout = `
+      <div class="print-step-grid print-grid-2col">
+        ${gridImgs.map((src, i) => `
+          <div class="print-step-cell">
+            <span class="print-step-num">${i + 1}</span>
+            <img class="print-step-img" src="${src}" />
+          </div>
+        `).join('')}
+      </div>
+      ${midImg ? `
+      <div class="print-mid-single">
+        <span class="print-step-num">5</span>
+        <img class="print-step-img" src="${midImg}" />
+      </div>` : ''}
+      <div class="print-bottom">
+        <div class="print-bottom-left">
+          <ol class="print-steps-list">
+            ${(data.steps || []).map(s => `<li class="print-step-li">${s.trim()}</li>`).join('')}
+          </ol>
+          <h1 class="print-main-title">${(data.title || '').toUpperCase()}</h1>
+        </div>
+        <div class="print-bottom-right">
+          ${lastImg ? `
+          <div class="print-step-cell">
+            <span class="print-step-num">6</span>
+            <img class="print-last-img" src="${lastImg}" />
+          </div>` : ''}
+        </div>
+      </div>
+    `;
+
+  } else {
+    // 기본 레이아웃
+    const gridImgs = imgs.slice(0, imgs.length - 1);
+    const lastImg  = imgs[imgs.length - 1] || '';
+    printLayout = `
+      <div class="print-step-grid print-grid-4col">
+        ${gridImgs.map((src, i) => `
+          <div class="print-step-cell">
+            <span class="print-step-num">${i + 1}</span>
+            <img class="print-step-img" src="${src}" />
+          </div>
+        `).join('')}
+      </div>
+      <div class="print-bottom">
+        <div class="print-bottom-left">
+          <ol class="print-steps-list">
+            ${(data.steps || []).map(s => `<li class="print-step-li">${s.trim()}</li>`).join('')}
+          </ol>
+          <h1 class="print-main-title">${(data.title || '').toUpperCase()}</h1>
+        </div>
+        <div class="print-bottom-right">
+          ${lastImg ? `<img class="print-last-img" src="${lastImg}" />` : ''}
+        </div>
+      </div>
+    `;
+  }
+
+  page.innerHTML = printLayout;
 
   printArea.appendChild(page);
 
@@ -733,16 +798,20 @@ fetch(CSV_URL)
     if (!type) return;
 
     
-    kitePrintData[type] = {
-        title: row['Print-Title'] || '',
+  kitePrintData[type] = {
+  title: row['Print-Title'] || '',
   desc: row['Print-Desc'] || '',
   steps: (row['Print-Steps'] || '').split('|'),
-
   images: [
-    row['Kite-Img']
+    row['Kite-Img-1'],
+    row['Kite-Img-2'],
+    row['Kite-Img-3'],
+    row['Kite-Img-4'],
+    row['Kite-Img-5'],
+    row['Kite-Img-6'],
+    row['Kite-Img-7'],
   ].filter(Boolean)
-
-    };
+};
   });
 
   // 2. titleText / titleWords 선언
