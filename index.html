@@ -11,6 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kite</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
+
   <script>
     (function (d) {
       var config = {
@@ -48,30 +49,215 @@
   </div>
 
 
-
-  <!-- 패닝 힌트 
-  <div id="pan-hint">drag or scroll to explore ↓</div>-->
-
-  <!-- 미니맵 
-  <div id="minimap">
-    <div id="minimap-viewport"></div>
-  </div>-->
-
   <!-- Modal -->
   <div id="modal-container"></div>
   <svg id="string-layer"></svg>
 
   <!-- Chapter 2 -->
   <div id="chapter2">
-    <div id="chapter2-inner">
-      <p id="chapter2-label">How to make a Kite?</p>
-      <h2 id="chapter2-title">Coming soon...</h2>
-      <p id="chapter2-body"></p>
+    <div id="chapter2-scroll">
+
+
+
+
+
+      <!--1-->
+      <div class="ch2-slide ch2-menu-slide">
+        <div class="ch2-menu-grid">
+          <div class="ch2-menu-item" data-target="1">
+            <div class="ch2-menu-img-wrap">
+              <img
+                src="https://raw.githubusercontent.com/PPokKi-WW/lovely/refs/heads/main/image/KakaoTalk_20260613_144621681_11.png"
+                alt="" />
+            </div>
+            <p class="ch2-menu-title">Flat Kite</p>
+          </div>
+
+          <div class="ch2-menu-item" data-target="2">
+            <div class="ch2-menu-img-wrap">
+              <img
+                src="https://raw.githubusercontent.com/PPokKi-WW/lovely/refs/heads/main/image/KakaoTalk_20260613_144621681_01.png"
+                alt="Delta" />
+            </div>
+            <p class="ch2-menu-title">Delta Kite</p>
+          </div>
+
+          <div class="ch2-menu-item" data-target="3">
+            <div class="ch2-menu-img-wrap">
+              <img
+                src="https://raw.githubusercontent.com/PPokKi-WW/lovely/refs/heads/main/image/KakaoTalk_20260613_144621681_08%20%EB%B3%B5%EC%82%AC.png"
+                alt="Bowed" />
+            </div>
+            <p class="ch2-menu-title">Bowed Kite</p>
+          </div>
+
+          <div class="ch2-menu-item" data-target="4">
+            <div class="ch2-menu-img-wrap">
+              <img
+                src="https://raw.githubusercontent.com/PPokKi-WW/lovely/refs/heads/main/image/KakaoTalk_20260613_144621681_05.png"
+                alt="Box" />
+            </div>
+            <p class="ch2-menu-title">Box Kite</p>
+          </div>
+
+          <div class="ch2-menu-item" data-target="5">
+            <div class="ch2-menu-img-wrap">
+              <img
+                src="https://raw.githubusercontent.com/PPokKi-WW/lovely/refs/heads/main/image/KakaoTalk_20260613_144621681.png"
+                alt="Sled" />
+            </div>
+            <p class="ch2-menu-title">Sled Kite</p>
+          </div>
+
+          <div class="ch2-info">
+            <p class="ch2-step-title"> How to make a kite? </p>
+            <p class="ch2-step-desc"> 만들고 싶은 연을 선택하여 템플릿을 인쇄하세요 </p>
+          </div>
+
+        </div>
+      </div>
+
+      <!--2-->
+      <div class="ch2-slide" data-kite-type="flat">
+        <div class="ch2-img-slider">
+          <img class="ch2-img slide-img active"
+            src="https://raw.githubusercontent.com/PPokKi-WW/lovely/refs/heads/main/image/KakaoTalk_20260613_144621681_11.png"
+            alt="" />
+          <img class="ch2-img slide-img"
+            src="https://raw.githubusercontent.com/PPokKi-WW/lovely/refs/heads/main/image/_MG_0407.JPG" alt="" />
+          <img class="ch2-img slide-img"
+            src="https://raw.githubusercontent.com/PPokKi-WW/lovely/refs/heads/main/image/_MG_0511.JPG" alt="" />
+          <img class="ch2-img slide-img"
+            src="https://raw.githubusercontent.com/PPokKi-WW/lovely/refs/heads/main/image/_MG_0510.JPG" alt="" />
+
+        </div>
+
+        <div class="ch2-info">
+
+          <p class="ch2-step-title"> Flat Kite </p>
+          <p class="ch2-step-desc"> 평평한 면으로 구성된 연.<br> 가장 기본적이고 만들기 쉬우며, 원하는 이미지로 제작하기 편하다. </p>
+        </div>
+      </div>
+
+
+
+      <!--3-->
+      <div class="ch2-slide" data-kite-type="delta">
+        <div class="ch2-img-slider">
+          <img class="ch2-img slide-img active"
+            src="https://raw.githubusercontent.com/PPokKi-WW/lovely/refs/heads/main/image/KakaoTalk_20260613_144621681_01.png"
+            alt="" />
+          <img class="ch2-img slide-img"
+            src="https://raw.githubusercontent.com/PPokKi-WW/lovely/refs/heads/main/image/delta%20kite.jpg" alt="" />
+          <img class="ch2-img slide-img"
+            src="https://raw.githubusercontent.com/PPokKi-WW/lovely/refs/heads/main/image/_MG_0612.JPG" alt="" />
+          <img class="ch2-img slide-img"
+            src="https://raw.githubusercontent.com/PPokKi-WW/lovely/refs/heads/main/image/_MG_0617.JPG" alt="" />
+        </div>
+
+        <div class="ch2-info">
+
+          <p class="ch2-step-title">Delta Kite</p>
+          <p class="ch2-step-desc">삼각형 구조의 연.<br> 가장 날리기 쉬우며 빠르게 상승한다.
+          </p>
+        </div>
+      </div>
+
+
+
+
+
+      <!--4-->
+      <div class="ch2-slide" data-kite-type="bowed">
+        <div class="ch2-img-slider">
+          <img class="ch2-img slide-img active"
+            src="https://raw.githubusercontent.com/PPokKi-WW/lovely/refs/heads/main/image/KakaoTalk_20260613_144621681_08%20%EB%B3%B5%EC%82%AC.png"
+            alt="" />
+          <img class="ch2-img slide-img"
+            src="https://raw.githubusercontent.com/PPokKi-WW/lovely/refs/heads/main/image/_MG_0431.JPG" alt="" />
+          <img class="ch2-img slide-img"
+            src="https://raw.githubusercontent.com/PPokKi-WW/lovely/refs/heads/main/image/_MG_0508.JPG" alt="" />
+          <img class="ch2-img slide-img"
+            src="https://raw.githubusercontent.com/PPokKi-WW/lovely/refs/heads/main/image/_MG_0532.JPG" alt="" />
+        </div>
+
+        <div class="ch2-info">
+
+          <p class="ch2-step-title"> Bowed Kite </p>
+          <p class="ch2-step-desc">곡면이 있는 연. <br>안정적이며 바람변화에 잘 적응한다.
+
+          </p>
+        </div>
+      </div>
+
+
+
+      <!--5box-->
+      <div class="ch2-slide" data-kite-type="box">
+        <div class="ch2-img-slider">
+          <img class="ch2-img slide-img active"
+            src="https://raw.githubusercontent.com/PPokKi-WW/lovely/refs/heads/main/image/KakaoTalk_20260613_144621681_0d5.png"
+            alt="" />
+          <img class="ch2-img slide-img"
+            src="https://raw.githubusercontent.com/PPokKi-WW/lovely/refs/heads/main/_MG_0430.JPG" alt="" />
+          <img class="ch2-img slide-img"
+            src="https://raw.githubusercontent.com/PPokKi-WW/lovely/refs/heads/main/_MG_0522.JPG" alt="" />
+          <img class="ch2-img slide-img"
+            src="https://raw.githubusercontent.com/PPokKi-WW/lovely/refs/heads/main/_MG_0501.JPG" alt="" />
+        </div>
+
+        <div class="ch2-info">
+
+          <p class="ch2-step-title"> Box Kite </p>
+          <p class="ch2-step-desc">사각형 구조의 연. <br> 사각틀 내부로 공기가 통과하며 안정적으로 날릴 수 있다.</p>
+        </div>
+      </div>
+
+
+      <!--6-->
+      <div class="ch2-slide" data-kite-type="sled">
+        <div class="ch2-img-slider">
+          <img class="ch2-img slide-img active"
+            src="https://raw.githubusercontent.com/PPokKi-WW/lovely/refs/heads/main/image/KakaoTalk_20260613_144621681.png"
+            alt="" />
+          <img class="ch2-img slide-img"
+            src="https://raw.githubusercontent.com/PPokKi-WW/lovely/refs/heads/main/image/_MG_0485.JPG" alt="" />
+          <img class="ch2-img slide-img"
+            src="https://raw.githubusercontent.com/PPokKi-WW/lovely/refs/heads/main/image/_MG_0483.JPG" alt="" />
+          <img class="ch2-img slide-img"
+            src="https://raw.githubusercontent.com/PPokKi-WW/lovely/refs/heads/main/image/_MG_0469.JPG" alt="" />
+
+        </div>
+
+        <div class="ch2-info">
+
+          <p class="ch2-step-title">Sled kite</p>
+          <p class="ch2-step-desc">가로 뼈대 없이 세로 뼈대와 곡면으로 이루어진 연.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 슬라이드 인디케이터 -->
+    <div id="ch2-indicator">
+      <span class="ch2-dot active"></span>
+      <span class="ch2-dot"></span>
+      <span class="ch2-dot"></span>
+      <span class="ch2-dot"></span>
+      <span class="ch2-dot"></span>
+      <span class="ch2-dot"></span>
+
+
     </div>
   </div>
 
 
+
+  <div id="print-area"></div>
+  <button id="print-btn">print</button>
+
+
   <script src="main.js"></script>
+
 </body>
 
 </html>

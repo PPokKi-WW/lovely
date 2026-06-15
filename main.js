@@ -1,5 +1,8 @@
 const SPREADSHEET_ID = "1l6UKUU7WVX-hfYO7WDLCrjKbUx028rnE";
 
+
+let kitePrintData = {};
+
 const KEYS = {
   title: "Meta-Title",
   description: "Meta-Description",
@@ -113,6 +116,7 @@ document.addEventListener('mouseup', e => {
 
 /* ── 휠 / 트랙패드 ── */
 world.addEventListener('scroll', () => {
+    if (parseFloat(chapter2.style.opacity) > 0.9) return;
   panX = -world.scrollLeft;
   panY = -world.scrollTop;
   targetX = panX;
@@ -126,6 +130,7 @@ let touchMoved = false;
 
 document.addEventListener('touchstart', e => {
   if (e.target.closest('.modal-overlay')) return;
+   if (e.target.closest('#chapter2')) return; // ← 추가
   touch0 = e.touches[0];
   dragStartX = touch0.clientX - panX;
   dragStartY = touch0.clientY - panY;
@@ -137,6 +142,7 @@ document.addEventListener('touchstart', e => {
 
 document.addEventListener('touchmove', e => {
   if (!touch0) return;
+   if (e.target.closest('#chapter2')) return; // ← 추가
   const t = e.touches[0];
   velX = t.clientX - lastMouseX;
   velY = t.clientY - lastMouseY;
@@ -162,6 +168,148 @@ document.addEventListener('touchend', () => {
 /* ── 관성 업데이트 ── */
 const chapter2 = document.getElementById('chapter2');
 const CHAPTER2_THRESHOLD = 0.9;
+const printBtn = document.getElementById('print-btn');
+
+
+
+
+/* ── print 버튼  ── */
+document.getElementById('print-btn').addEventListener('click', () => {
+  const printArea = document.getElementById('print-area');
+  printArea.innerHTML = '';
+
+  const slides = document.querySelectorAll('.ch2-slide');
+  const currentIdx = ch2Scroll
+    ? Math.round(ch2Scroll.scrollLeft / window.innerWidth)
+    : 0;
+  const currentSlide = slides[currentIdx] || slides[0];
+  const kiteType = (currentSlide.dataset.kiteType || '').toLowerCase();
+  const data = kitePrintData[kiteType] || {};
+
+  const title = currentSlide.querySelector('.ch2-step-title')?.textContent?.trim() || '';
+  const desc  = currentSlide.querySelector('.ch2-step-desc')?.textContent?.trim()  || '';
+
+const imgUrls = data.images || [];
+
+  // 인쇄 페이지 구성
+  const page = document.createElement('div');
+  page.className = 'print-page print-page-kite';
+
+  page.innerHTML = `
+    <!-- 상단 헤더 -->
+    <div class="print-header">
+      <p class="print-subtitle">How to make a kite</p>
+      <h1 class="print-main-title">${(data.title || title).toUpperCase()}</h1>
+    </div>
+
+    <!-- 본문: 이미지(왼쪽) + 텍스트(오른쪽) -->
+    <div class="print-body">
+      <div class="print-img-col" id="print-img-col"></div>
+
+      <div class="print-text-col">
+        <h2 class="print-steps-heading">STEP BY STEP</h2>
+        <ol class="print-steps-list">
+          ${(data.steps || desc.split('|')).filter(Boolean).map(step =>
+            `<li class="print-step-li">${step.trim()}</li>`
+          ).join('')}
+        </ol>
+
+        ${data.desc ? `
+        <div class="print-desc-block">
+          <h2 class="print-desc-title">${data.desc}</h2>
+        </div>` : ''}
+      </div>
+    </div>
+  `;
+
+  printArea.appendChild(page);
+
+  // 이미지 로딩
+  const imgCol = page.querySelector('#print-img-col');
+  const imgPromises = imgUrls.map(src => new Promise(resolve => {
+    const img = document.createElement('img');
+    img.className = 'print-kite-img';
+    img.onload  = resolve;
+    img.onerror = resolve;
+    img.src = src;
+    imgCol.appendChild(img);
+  }));
+
+  // display:none 우회 — 화면 밖으로
+  printArea.style.cssText = `
+    display: block;
+    position: fixed;
+    top: -9999px;
+    left: -9999px;
+  `;
+
+
+  
+  Promise.all(imgPromises).then(() => {
+    printArea.style.cssText = '';
+    window.print();
+    printArea.style.display = 'none';
+  });
+});
+
+
+
+
+
+
+
+
+
+
+///////////////*////
+
+const ch2Indicator = document.getElementById('ch2-indicator');
+const ch2Dots = document.querySelectorAll('.ch2-dot');
+const ch2Scroll = document.getElementById('chapter2-scroll');
+
+// 스크롤 위치에 따라 인디케이터 업데이트
+if (ch2Scroll) {
+  ch2Scroll.addEventListener('scroll', () => {
+    const idx = Math.round(ch2Scroll.scrollLeft / window.innerWidth);
+    ch2Dots.forEach((dot, i) => {
+      dot.classList.toggle('active', i === idx);
+    });
+
+    // 첫 번째 슬라이드(메뉴)에서는 print 버튼 숨김
+    if (printBtn) {
+      printBtn.style.opacity = idx === 0 ? '0' : '1';
+      printBtn.style.pointerEvents = idx === 0 ? 'none' : 'all';
+    }
+  });
+}
+/* ch2Scroll 이벤트 리스너 아래에 추가 */
+document.querySelectorAll('.ch2-menu-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const targetIdx = parseInt(item.dataset.target);
+    if (ch2Scroll) {
+      ch2Scroll.scrollTo({
+        left: targetIdx * window.innerWidth,
+        behavior: 'smooth'
+      });
+    }
+  });
+});
+
+
+
+document.querySelectorAll('.ch2-img-slider').forEach(slider => {
+  const imgs = slider.querySelectorAll('.slide-img');
+  if (imgs.length <= 1) return; // 이미지 1장이면 타이머 불필요
+
+  let current = 0;
+  setInterval(() => {
+    imgs[current].classList.remove('active');
+    current = (current + 1) % imgs.length;
+    imgs[current].classList.add('active');
+  }, 3000); // 2초마다 전환
+});
+
+
 
 function updateInertia() {
   if (isDragging) return;
@@ -174,10 +322,25 @@ function updateInertia() {
   if (chapter2) {
     const reveal = Math.max(0, (progress - CHAPTER2_THRESHOLD) / (1 - CHAPTER2_THRESHOLD));
     chapter2.style.opacity = reveal;
-    chapter2.style.pointerEvents = 'none';
+   chapter2.style.pointerEvents = reveal > 0.9 ? 'all' : 'none';
     chapter2.style.transform = `translateY(${(1 - reveal) * 20}px)`;
-  }
 
+    // print 버튼 — 챕터2가 완전히 나타났을 때만 표시
+   if (printBtn) {
+  const ch2Idx = ch2Scroll
+    ? Math.round(ch2Scroll.scrollLeft / window.innerWidth)
+    : 0;
+  const showPrint = reveal > 0.9 && ch2Idx !== 0;
+  printBtn.style.opacity = showPrint ? '1' : '0';
+  printBtn.style.pointerEvents = showPrint ? 'all' : 'none';
+}
+
+if (ch2Indicator) {
+  ch2Indicator.style.opacity = reveal > 0.9 ? 1 : 0;
+}
+
+
+  }
 }
 
 
@@ -544,6 +707,15 @@ function updateStrHandle(k, paths) {
 
 
 
+// Ctrl+P 인터셉트
+document.addEventListener('keydown', e => {
+  if (e.ctrlKey && e.key === 'p') {
+    e.preventDefault();
+    window.print();
+  }
+});
+
+
 
 
 
@@ -551,41 +723,58 @@ function updateStrHandle(k, paths) {
 /* ── Fetch ── */
 fetch(CSV_URL)
   .then(res => { if (!res.ok) throw new Error(`HTTP ${res.status}`); return res.text(); })
-  .then(text => {
-    const rows  = parseCSV(text);
-    const first = rows[0] || {};
-   
-// 새 코드
-const titleText = first[KEYS.title] || '';
-const titleWords = titleText.split(' ').filter(Boolean);
+ .then(text => {
+  const rows = parseCSV(text);
+  const first = rows[0] || {};
 
-// 기존 site-title 숨기기
-document.getElementById('site-title').style.display = 'none';
+  // 1. kitePrintData 채우기
+  rows.forEach(row => {
+    const type = (row['Kite-Type'] || '').trim().toLowerCase();
+    if (!type) return;
 
-titleWords.forEach(word => {
-  const el = document.createElement('div');
-  el.className = 'floating-word';
-  el.textContent = word;
+    
+    kitePrintData[type] = {
+        title: row['Print-Title'] || '',
+  desc: row['Print-Desc'] || '',
+  steps: (row['Print-Steps'] || '').split('|'),
 
-  // 뷰포트 범위 안에 배치
-  const margin = 100;
-  const wx = margin + Math.random() * (window.innerWidth - margin * 2);
-  const wy = margin + Math.random() * (window.innerHeight - margin * 2);
+  images: [
+    row['Kite-Img']
+  ].filter(Boolean)
 
-  el.style.left = wx + 'px';
-  el.style.top  = wy + 'px';
+    };
+  });
 
-  world.appendChild(el);
-});
+  // 2. titleText / titleWords 선언
+  const titleText = first[KEYS.title] || '';
+  const titleWords = titleText.split(' ').filter(Boolean);
+  document.getElementById('site-title').style.display = 'none';
 
-    document.getElementById('site-desc').textContent  = first[KEYS.description] || '';
-    document.getElementById('about-text').textContent = first[KEYS.about]       || '';
-    document.title = first[KEYS.title] || 'Kite';
+  // 3. floating words 배치
+  titleWords.forEach(word => {
+    const el = document.createElement('div');
+    el.className = 'floating-word';
+    el.textContent = word;
+    const margin = 100;
+    const wx = margin + Math.random() * (window.innerWidth - margin * 2);
+    const wy = margin + Math.random() * (window.innerHeight - margin * 2);
+    el.style.left = wx + 'px';
+    el.style.top  = wy + 'px';
+    world.appendChild(el);
+  });
 
-    rows.filter(r => r[KEYS.project]).forEach((row, i) => createKite(row, i));
+  // 4. 나머지 UI
+  document.getElementById('site-desc').textContent  = first[KEYS.description] || '';
+  document.getElementById('about-text').textContent = first[KEYS.about]       || '';
+  document.title = first[KEYS.title] || 'Kite';
 
-    requestAnimationFrame(animate);
-  })
+  // 5. 연 생성 + 애니메이션 시작
+  rows.filter(r => r[KEYS.project]).forEach((row, i) => createKite(row, i));
+  requestAnimationFrame(animate);
+})
+
+    
+
   .catch(err => {
     console.error('Error:', err);
     document.body.innerHTML += `<p style="color:#fff;padding:2rem;font-family:monospace">
@@ -598,11 +787,37 @@ titleWords.forEach(word => {
 
 
 
-  // 디버그용 — 브라우저 콘솔에서 실제 키 이름 확인
-console.log('row keys:', Object.keys(row));
-console.log('Structure value:', row['Structure']);
 
-const structure = (row['Structure'] || '').toLowerCase();
-console.log('structure lowercase:', structure);
+  if (ch2Scroll) {
+  ch2Scroll.addEventListener('wheel', e => {
+    // 첫 슬라이드에서 위로 스크롤하면 챕터2 탈출
+    if (ch2Scroll.scrollLeft === 0 && e.deltaY < 0) {
+      e.preventDefault();
+      // world를 챕터2 진입 직전 위치로 되돌리기
+      targetY = -(WORLD_H * CHAPTER2_THRESHOLD - window.innerHeight) * 0.95;
+      panY = targetY;
+      applyPan();
+    }
+  }, { passive: false });
+}
 
-popup.innerHTML = buildPopupSVG(structure, t1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
