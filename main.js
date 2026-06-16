@@ -266,7 +266,7 @@ const imgs = data.images || [];
       <div class="print-step-grid print-grid-4col">
         ${gridImgs.map((src, i) => `
           <div class="print-step-cell">
-            <span class="print-step-num">${i + 1}</span>
+            
             <img class="print-step-img" src="${src}" />
           </div>
         `).join('')}
@@ -287,17 +287,14 @@ const imgs = data.images || [];
 
   page.innerHTML = printLayout;
 
-  printArea.appendChild(page);
+printArea.appendChild(page);
 
-  // 이미지 로딩
-  const imgCol = page.querySelector('#print-img-col');
-  const imgPromises = imgUrls.map(src => new Promise(resolve => {
-    const img = document.createElement('img');
-    img.className = 'print-kite-img';
+  // 모든 이미지 로딩 대기
+  const allImgs = Array.from(page.querySelectorAll('img'));
+  const imgPromises = allImgs.map(img => new Promise(resolve => {
+    if (img.complete) { resolve(); return; }
     img.onload  = resolve;
     img.onerror = resolve;
-    img.src = src;
-    imgCol.appendChild(img);
   }));
 
   // display:none 우회 — 화면 밖으로
@@ -308,8 +305,6 @@ const imgs = data.images || [];
     left: -9999px;
   `;
 
-
-  
   Promise.all(imgPromises).then(() => {
     printArea.style.cssText = '';
     window.print();
