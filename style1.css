@@ -591,16 +591,19 @@ header {
     margin-bottom: 1mm;
   }
 
-  .print-main-title {
-    font-size: 28pt;
-    font-weight: 700;
-    color: #111;
-    line-height: 1;
-  }
 
-  .print-body {
+
+  .print-page-flat .print-body {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    gap: 10mm;
+    align-items: start;
+    page-break-inside: avoid;
+  }
+
+  .print-page-bowed .print-body {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
     gap: 10mm;
     align-items: start;
     page-break-inside: avoid;
@@ -645,6 +648,27 @@ header {
     margin-bottom: 3mm;
   }
 
+  .print-page-flat .print-steps-heading {
+    font-size: 12pt;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 4mm;
+  }
+
+  .print-page-delta .print-steps-heading {
+    font-size: 12pt;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 0mm;
+  }
+
+  .print-page-bowed .print-steps-heading {
+    font-size: 12pt;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 0mm;
+  }
+
   .print-page-flat .print-steps-list {
     font-size: 10pt;
     font-family: neutronic-hangeul-rounded, sans-serif;
@@ -662,6 +686,16 @@ header {
     line-height: 1.5;
     padding-left: 5mm;
     max-width: 90mm;
+
+  }
+
+  .print-page-bowed .print-steps-list {
+    font-size: 10pt;
+    font-family: neutronic-hangeul-rounded, sans-serif;
+    color: #333;
+    line-height: 1.5;
+    padding-left: 5mm;
+    max-width: 95mm;
 
   }
 
@@ -688,12 +722,29 @@ header {
 
 
 /* 하단 — 텍스트 왼쪽 + 이미지 오른쪽 */
-.print-bottom {
+.print-page-flat .print-bottom {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 5mm;
   align-items: end;
   margin-top: 30mm;
+}
+
+.print-page-delta .print-bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5mm;
+  align-items: end;
+  margin-top: 20mm;
+}
+
+
+.print-page-bowed .print-bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5mm;
+  align-items: end;
+  margin-top: 20mm;
 }
 
 .print-bottom-left {
@@ -702,7 +753,7 @@ header {
   gap: 4mm;
 }
 
-.print-main-title {
+.print-page-flat .print-main-title {
   font-size: 40pt;
   font-weight: 900;
   color: #111;
@@ -732,12 +783,26 @@ header {
   width: 100%;
 }
 
-.print-last-img {
+.print-page-flat .print-last-img {
   width: 120mm;
   /* ← 원하는 너비로 조정 */
   height: 80mm;
   object-fit: contain;
 
+}
+
+.print-page-delta .print-last-img {
+  width: 110mm;
+  /* ← 원하는 너비로 조정 */
+  height: 80mm;
+  object-fit: contain;
+}
+
+.print-page-bowed .print-last-img {
+  width: 100mm;
+  /* ← 원하는 너비로 조정 */
+  height: 80mm;
+  object-fit: contain;
 }
 
 .print-grid-2col {
@@ -747,10 +812,17 @@ header {
   margin-bottom: 6mm;
 }
 
-.print-single-img {
+
+.print-page-flat .print-single-img {
   width: 100%;
   margin-top: 0mm;
-  margin-bottom: 30mm;
+  margin-bottom: 10mm;
+}
+
+.print-page-delta .print-single-img {
+  width: 100%;
+  margin-top: 0mm;
+  margin-bottom: 20mm;
 }
 
 .print-main-img {
