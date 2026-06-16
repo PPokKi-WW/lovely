@@ -191,8 +191,8 @@ document.getElementById('print-btn').addEventListener('click', () => {
 
 const imgs = data.images || [];
 
-  const page = document.createElement('div');
-  page.className = 'print-page print-page-kite';
+const page = document.createElement('div');
+page.className = `print-page print-page-kite print-page-${kiteType}`;
 
 
   page.innerHTML = `
