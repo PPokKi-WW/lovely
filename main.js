@@ -195,97 +195,22 @@ const imgs = data.images || [];
   page.className = 'print-page print-page-kite';
 
 
-  // ── 타입별 레이아웃 분기 ──
-  let printLayout = '';
-
-  if (kiteType === 'flat') {
-    const gridImgs = imgs.slice(0, 6);
-    const lastImg  = imgs[6] || '';
-    printLayout = `
-      <div class="print-step-grid print-grid-4col">
-        ${gridImgs.map((src, i) => `
-          <div class="print-step-cell">
-            <span class="print-step-num">${i + 1}</span>
-            <img class="print-step-img" src="${src}" />
-          </div>
-        `).join('')}
+  page.innerHTML = `
+    <div class="print-single-img">
+      ${imgs[0] ? `<img class="print-main-img" src="${imgs[0]}" />` : ''}
+    </div>
+    <div class="print-bottom">
+      <div class="print-bottom-left">
+        <ol class="print-steps-list">
+          ${(data.steps || []).map(s => `<li class="print-step-li">${s.trim()}</li>`).join('')}
+        </ol>
+        <h1 class="print-main-title">${(data.title || '').toUpperCase()}</h1>
       </div>
-      <div class="print-bottom">
-        <div class="print-bottom-left">
-          <ol class="print-steps-list">
-            ${(data.steps || []).map(s => `<li class="print-step-li">${s.trim()}</li>`).join('')}
-          </ol>
-          <h1 class="print-main-title">${(data.title || '').toUpperCase()}</h1>
-        </div>
-        <div class="print-bottom-right">
-          ${lastImg ? `<img class="print-last-img" src="${lastImg}" />` : ''}
-        </div>
+      <div class="print-bottom-right">
+        ${imgs[1] ? `<img class="print-last-img" src="${imgs[1]}" />` : ''}
       </div>
-    `;
-
-  } else if (kiteType === 'delta') {
-    const gridImgs = imgs.slice(0, 4);
-    const midImg   = imgs[4] || '';
-    const lastImg  = imgs[5] || '';
-    printLayout = `
-      <div class="print-step-grid print-grid-2col">
-        ${gridImgs.map((src, i) => `
-          <div class="print-step-cell">
-            <span class="print-step-num">${i + 1}</span>
-            <img class="print-step-img" src="${src}" />
-          </div>
-        `).join('')}
-      </div>
-      ${midImg ? `
-      <div class="print-mid-single">
-        <span class="print-step-num">5</span>
-        <img class="print-step-img" src="${midImg}" />
-      </div>` : ''}
-      <div class="print-bottom">
-        <div class="print-bottom-left">
-          <ol class="print-steps-list">
-            ${(data.steps || []).map(s => `<li class="print-step-li">${s.trim()}</li>`).join('')}
-          </ol>
-          <h1 class="print-main-title">${(data.title || '').toUpperCase()}</h1>
-        </div>
-        <div class="print-bottom-right">
-          ${lastImg ? `
-          <div class="print-step-cell">
-            <span class="print-step-num">6</span>
-            <img class="print-last-img" src="${lastImg}" />
-          </div>` : ''}
-        </div>
-      </div>
-    `;
-
-  } else {
-    // 기본 레이아웃
-    const gridImgs = imgs.slice(0, imgs.length - 1);
-    const lastImg  = imgs[imgs.length - 1] || '';
-    printLayout = `
-      <div class="print-step-grid print-grid-4col">
-        ${gridImgs.map((src, i) => `
-          <div class="print-step-cell">
-            
-            <img class="print-step-img" src="${src}" />
-          </div>
-        `).join('')}
-      </div>
-      <div class="print-bottom">
-        <div class="print-bottom-left">
-          <ol class="print-steps-list">
-            ${(data.steps || []).map(s => `<li class="print-step-li">${s.trim()}</li>`).join('')}
-          </ol>
-          <h1 class="print-main-title">${(data.title || '').toUpperCase()}</h1>
-        </div>
-        <div class="print-bottom-right">
-          ${lastImg ? `<img class="print-last-img" src="${lastImg}" />` : ''}
-        </div>
-      </div>
-    `;
-  }
-
-  page.innerHTML = printLayout;
+    </div>
+  `;
 
 printArea.appendChild(page);
 
